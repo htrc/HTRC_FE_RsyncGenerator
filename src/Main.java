@@ -45,6 +45,7 @@ public class Main
             String path = pt.mapToPPath(uncleanId);
             String cleanVolumePart = volumePart.replace(':', '+');
             cleanVolumePart = cleanVolumePart.replace('/', '=');
+            cleanVolumePart = cleanVolumePart.replace('.', ',');
 
             printWriter.write("rsync -v sandbox.htrc.illinois.edu::pd-features"
                     + File.separator + "advanced"
