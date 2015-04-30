@@ -34,36 +34,19 @@ public class Main
 
         String volumeId;
         while ((volumeId = br.readLine()) != null) {
-
-            //special handling for identifiers with with $ in them, because rsync treats $b as null
-            //this handling is specific to the beta 2015 run on 4.8 million volumes
-            if (volumeId.contains("$")){
-                volumeId=volumeId.replace("$","");
-            }
-
             volumeId = URLDecoder.decode(volumeId, "UTF-8");
 
             Pairtree pt = new Pairtree();
-
 
             // Parse the volume ID
             String sourcePart = volumeId.substring(0, volumeId.indexOf("."));
             String volumePart = volumeId.substring(volumeId.indexOf(".") + 1, volumeId.length());
 
-            //special handling for identifiers with with $ in them, because pairtree does not work for single chars,
-            // which can happen when a $is removed from identifier
-            //this handling is specific to the beta 2015 run on 4.8 million volumes
-            if ((volumePart.length() % 2) != 0){
-                volumePart = volumePart.substring(0, volumePart.length()-1);
-            }
-
             String uncleanId = pt.uncleanId(volumePart);
             String path = pt.mapToPPath(uncleanId);
-            String cleanVolumePart = volumePart.replace(':', '+');
-            cleanVolumePart = cleanVolumePart.replace('/', '=');
-            cleanVolumePart = cleanVolumePart.replace('.', ',');
+            String cleanVolumePart = pt.cleanId(volumePart);
 
-            printWriter.write("rsync -v sandbox.htrc.illinois.edu::pd-features"
+            printWriter.write("rsync -v 'sandbox.htrc.illinois.edu::pd-features"
                     + File.separator + "advanced"
                     + File.separator + sourcePart
                     + File.separator + "pairtree_root"
@@ -72,9 +55,9 @@ public class Main
                     + File.separator + sourcePart
                     + "."
                     + cleanVolumePart
-                    + ".advanced.json.bz2 $(pwd)\n");
+                    + ".advanced.json.bz2' $(pwd)\n");
 
-            printWriter.write("rsync -v sandbox.htrc.illinois.edu::pd-features"
+            printWriter.write("rsync -v 'sandbox.htrc.illinois.edu::pd-features"
                     + File.separator + "basic"
                     + File.separator + sourcePart
                     + File.separator + "pairtree_root"
@@ -83,7 +66,7 @@ public class Main
                     + File.separator + sourcePart
                     + "."
                     + cleanVolumePart
-                    + ".basic.json.bz2 $(pwd)\n");
+                    + ".basic.json.bz2' $(pwd)\n");
         }
 
         printWriter.close();
