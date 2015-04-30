@@ -46,7 +46,7 @@ public class Main
             String path = pt.mapToPPath(uncleanId);
             String cleanVolumePart = pt.cleanId(volumePart);
 
-            printWriter.write("rsync -v 'sandbox.htrc.illinois.edu::pd-features"
+            printWriter.write("rsync -v 'data.sharc.hathitrust.org::pd-features"
                     + File.separator + "advanced"
                     + File.separator + sourcePart
                     + File.separator + "pairtree_root"
@@ -57,7 +57,7 @@ public class Main
                     + cleanVolumePart
                     + ".advanced.json.bz2' $(pwd)\n");
 
-            printWriter.write("rsync -v 'sandbox.htrc.illinois.edu::pd-features"
+            printWriter.write("rsync -v 'data.sharc.hathitrust.org::pd-features"
                     + File.separator + "basic"
                     + File.separator + sourcePart
                     + File.separator + "pairtree_root"
